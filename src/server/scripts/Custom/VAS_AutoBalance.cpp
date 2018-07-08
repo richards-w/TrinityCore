@@ -229,7 +229,7 @@ class VAS_AutoBalance_AllMapScript : public AllMapScript
 							if (Player* playerHandle = playerIteration->GetSource())
 							{
 								ChatHandler chatHandle = ChatHandler(playerHandle->GetSession());
-								chatHandle.PSendSysMessage("|cffFF0000 [AutoBalance]|r|cffFF8000 %s entered the Instance %s. Auto setting player count to %u (Player Difficulty Offset = %u) |r", player->GetName().c_str(), map->GetMapName(), map->GetPlayersCountExceptGMs() + PlayerCountDifficultyOffset, PlayerCountDifficultyOffset);
+								chatHandle.PSendSysMessage("|cffFF0000 [AutoBalance]|r|cffFF8000 %s entered the Instance %s. Auto setting player count to %u (Player Difficulty Offset = %u) |r", player->GetName().c_str(), map->GetMapName(), /*map->GetPlayersCountExceptGMs() +*/ PlayerCountDifficultyOffset + 1, PlayerCountDifficultyOffset);
 							}
 						}
 					}
@@ -239,8 +239,10 @@ class VAS_AutoBalance_AllMapScript : public AllMapScript
 		
 		void OnPlayerLeaveAll(Map* map, Player* player)
 		{
-		
-			int instancePlayerCount = map->GetPlayersCountExceptGMs() - 1;
+            int instancePlayerCount = 0;
+            if (map->GetPlayersCountExceptGMs() > 0) {
+                instancePlayerCount = /*map->GetPlayersCountExceptGMs() -*/ 1;
+            }
 			
 			if (instancePlayerCount >= 1)
 			{
@@ -282,17 +284,17 @@ public:
 		if (creature->GetMap()->IsDungeon() || sConfigMgr->GetIntDefault("VASAutoBalance.DungeonsOnly", 1) < 1)
 		{
 			ModifyCreatureAttributes(creature);
-			CreatureInfo[creature->GetGUID()].instancePlayerCount = creature->GetMap()->GetPlayersCountExceptGMs() + PlayerCountDifficultyOffset;
+            CreatureInfo[creature->GetGUID()].instancePlayerCount = /*creature->GetMap()->GetPlayersCountExceptGMs() +*/ PlayerCountDifficultyOffset + 1;
 		}
 	}
 
 	void OnAllCreatureUpdate(Creature* creature, uint32 diff)
 	{
-		if (!(CreatureInfo[creature->GetGUID()].instancePlayerCount == (creature->GetMap()->GetPlayersCountExceptGMs() + PlayerCountDifficultyOffset)))
+        if (!(CreatureInfo[creature->GetGUID()].instancePlayerCount == (/*creature->GetMap()->GetPlayersCountExceptGMs() +*/ PlayerCountDifficultyOffset + 1)))
 		{
 			if (creature->GetMap()->IsDungeon() || creature->GetMap()->IsBattleground() || sConfigMgr->GetIntDefault("VASAutoBalance.DungeonsOnly", 1) < 1)
 				ModifyCreatureAttributes(creature);
-			CreatureInfo[creature->GetGUID()].instancePlayerCount = creature->GetMap()->GetPlayersCountExceptGMs() + PlayerCountDifficultyOffset;
+            CreatureInfo[creature->GetGUID()].instancePlayerCount = /*creature->GetMap()->GetPlayersCountExceptGMs() +*/ PlayerCountDifficultyOffset + 1;
 		}
 	}
 
@@ -311,7 +313,7 @@ public:
 
 		uint32 baseHealth = creatureStats->GenerateHealth(creatureTemplate);
 		uint32 baseMana = creatureStats->GenerateMana(creatureTemplate);
-		uint32 instancePlayerCount = creature->GetMap()->GetPlayersCountExceptGMs() + PlayerCountDifficultyOffset;
+        uint32 instancePlayerCount = /*creature->GetMap()->GetPlayersCountExceptGMs() +*/ PlayerCountDifficultyOffset + 1;
 		uint32 maxNumberOfPlayers = ((InstanceMap*)sMapMgr->FindMap(creature->GetMapId(), creature->GetInstanceId()))->GetMaxPlayers();
 		uint32 scaledHealth = 0;
 		uint32 scaledMana = 0;
