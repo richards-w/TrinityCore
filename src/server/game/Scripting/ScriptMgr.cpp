@@ -1598,7 +1598,7 @@ bool ScriptMgr::OnAreaTrigger(Player* player, AreaTriggerEntry const* trigger)
     return tmpscript->OnTrigger(player, trigger);
 }
 
-void ScriptMgr::OnCreatureUpade(Creature* creature, uint32 diff)
+void ScriptMgr::OnCreatureUpdate(Creature* creature, uint32 diff)
 {
     ASSERT(creature);
 
