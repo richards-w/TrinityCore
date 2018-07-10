@@ -300,16 +300,11 @@ public:
 
 	void OnAllCreatureUpdate(Creature* creature, uint32 diff)
 	{
-        int instancePlayerCount = 0;
-        if (creature->GetMap()->GetPlayersCountExceptGMs() > 0) {
-            instancePlayerCount = 1;
-        }
-
-        if (!(CreatureInfo[creature->GetGUID()].instancePlayerCount == (instancePlayerCount + PlayerCountDifficultyOffset)))
+        if (!(CreatureInfo[creature->GetGUID()].instancePlayerCount == (creature->GetMap()->GetPlayersCountExceptGMs() + PlayerCountDifficultyOffset)))
 		{
 			if (creature->GetMap()->IsDungeon() || creature->GetMap()->IsBattleground() || sConfigMgr->GetIntDefault("VASAutoBalance.DungeonsOnly", 1) < 1)
 				ModifyCreatureAttributes(creature);
-            CreatureInfo[creature->GetGUID()].instancePlayerCount = instancePlayerCount + PlayerCountDifficultyOffset;
+            CreatureInfo[creature->GetGUID()].instancePlayerCount = creature->GetMap()->GetPlayersCountExceptGMs() + PlayerCountDifficultyOffset;
 		}
 	}
 
