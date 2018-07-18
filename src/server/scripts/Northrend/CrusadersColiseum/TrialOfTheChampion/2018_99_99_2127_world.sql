@@ -407,7 +407,7 @@ SET @RISEN_CHAMP_H  := 35717;
 -- UPDATE `creature_template` SET `InhabitType`=7 WHERE `entry`=@KNIGHT_VEHICLE;
 delete from creature_template_movement where `CreatureId` = @KNIGHT_VEHICLE;
 insert into creature_template_movement (`CreatureId`,`Ground`,`Swim`,`Flight`,`Rooted`) VALUES 
-(@KNIGHT_VEHICLE, 0, 0, 2, 0)
+(@KNIGHT_VEHICLE, 0, 0, 2, 0);
 
 -- Risen Champion is missing scriptname
 UPDATE `creature_template` SET `ScriptName`='npc_risen_ghoul' WHERE `entry`=@RISEN_CHAMP;
